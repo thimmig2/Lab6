@@ -1,0 +1,29 @@
+Game Obects
+
+	Enemy1
+		seeded by enemy generator
+			speed
+			health
+			probability of weapon upgrade drop
+			bullet firing speed
+			etc
+	Enemy2
+
+	Player
+
+
+	game view (hud)
+		points
+		level
+		enemyies destroyed
+
+	Enemy generator
+		seeded by level generator
+			difficulty
+		passes each enemy a list of waypoints to follow
+			enemies will fly in as generated and follow the interpolated path
+
+	level generator
+		clears game world
+		seeds enemy generator
+		updates game view
