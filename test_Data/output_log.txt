@@ -11,7 +11,7 @@ Platform assembly: C:\Users\Sebastian\Developement\Lab6\test_Data\Managed\UnityE
 Loading C:\Users\Sebastian\Developement\Lab6\test_Data\Managed\UnityEngine.dll into Unity Child Domain
 Platform assembly: C:\Users\Sebastian\Developement\Lab6\test_Data\Managed\Assembly-CSharp.dll (this message is harmless)
 Loading C:\Users\Sebastian\Developement\Lab6\test_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
-- Completed reload, in  0.053 seconds
+- Completed reload, in  0.062 seconds
 desktop: 1280x800 60Hz; virtual: 1280x800 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
