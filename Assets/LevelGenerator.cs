@@ -12,11 +12,7 @@ public class LevelGenerator : MonoBehaviour {
 		enemyGenerator = (EnemyGenerator)FindObjectOfType(typeof(EnemyGenerator));
 		enemyGenerator.spawnEnemies(0);
 
-		float[] boundary = new float[4];
-		boundary[0] = -5F;
-		boundary[1] = 5F;
-		boundary[2] = 5F;
-		boundary[3] = -5F;
+		Vector4 boundary = new Vector4(-5, 5, 5, -5);
 		player = PlayerScript.Create(boundary, transform);
 	}
 	

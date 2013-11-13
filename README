@@ -8,8 +8,17 @@ Game Obects
 			bullet firing speed
 			etc
 	Enemy2
+		speed
+		health
+		probability of weapon upgrade drop
+		bullet firing speed
 
 	Player
+		speed
+		shield
+		health
+		probability of weapon upgrade drop
+		bullet firing speed
 
 
 	game view (hud)

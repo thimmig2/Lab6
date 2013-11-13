@@ -3,9 +3,8 @@ using System.Collections;
 
 public class BulletScript : MonoBehaviour {
 
-	public float bulletDamage = 2;
-	public float speed = 10;
-	public bool done = false;
+	private float bulletDamage = 2F;
+	private float speed = 10;
 
 	// Use this for initialization
 	void Start () {
@@ -23,11 +22,10 @@ public class BulletScript : MonoBehaviour {
 
 	void OnCollisionEnter(Collision collision) {
         //if(collision.gameObject.tag == "Predator" || collision.gameObject.tag == "Goal") {
-        if(done == false && collision.gameObject.tag != "Player" && collision.gameObject.tag != "Bullet"){
-            done = true;
-            collision.gameObject.SendMessage("applyDamage", bulletDamage);
+        if(collision.gameObject.tag != "Player" && collision.gameObject.tag != "Bullet"){
+            collision.gameObject.SendMessage("applyDamage", this.bulletDamage);
+            Debug.Log(this.bulletDamage);
             Destroy(gameObject);
-            Debug.Log("Collision");
         }
     }
 }

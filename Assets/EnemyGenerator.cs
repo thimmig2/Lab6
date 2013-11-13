@@ -18,10 +18,24 @@ public class EnemyGenerator : MonoBehaviour {
 	}
 
 	public void spawnEnemies(int difficultySeed) {
+		StartCoroutine(spawnEnemiesMethod(difficultySeed));
+	}
+
+	IEnumerator spawnEnemiesMethod(int difficultySeed) {
 		enemies = new List<GameObject>();
-		for(int count = 0; count < 10; count++) {
-			GameObject enemy = Instantiate(enemyPrefabs[0], transform.position, transform.rotation) as GameObject;
-			enemies.Add(enemy);
+		for(int count = 0; count < 100; count++) {
+			List<Vector3> waypoints = new List<Vector3>();
+
+			waypoints.Add(new Vector3(-2.5F, 0F, 2.5F));
+			waypoints.Add(new Vector3(0F, 0F, 0F));
+			waypoints.Add(new Vector3(2.5F, 0F, 2.5F));
+			waypoints.Add(new Vector3(0F, 0F, 0F));
+			waypoints.Add(new Vector3(2.5F, 0F, -2.5F));
+			waypoints.Add(new Vector3(0F, 0F, 0F));
+			waypoints.Add(new Vector3(-2.5F, 0F, -2.5F));
+
+			yield return new WaitForSeconds (1);
+			enemies.Add(Enemy.Create(enemyPrefabs[0], transform, waypoints));			
 		}
 	}
 
