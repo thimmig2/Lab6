@@ -85,6 +85,10 @@ public class PlayerScript : MonoBehaviour {
 		}
 	}
 
+	public void upgradeRegen() {
+		this.regen *= 2;
+	}
+
 	void OnCollisionEnter(Collision collision) {
         //if(collision.gameObject.tag == "Predator" || collision.gameObject.tag == "Goal") {
         if(collision.gameObject.tag == "Enemy"){
