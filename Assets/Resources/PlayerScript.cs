@@ -38,8 +38,6 @@ public class PlayerScript : MonoBehaviour {
 		controls();
 	}
 
-
-
 	public void controls() {
 		 
 		if (Input.GetKey(KeyCode.LeftArrow) && transform.localPosition.x > boundaries.x) {
@@ -66,19 +64,14 @@ public class PlayerScript : MonoBehaviour {
 
 		if (Input.GetKey(KeyCode.X)) {
 			if(this.power > 5){
-				for(float angle = -45F; angle <= 45; angle += 15) {
-					Quaternion target = Quaternion.Euler(0, angle, 0);
-					GameObject player = Instantiate(Resources.Load("Bullet", typeof(GameObject)), transform.position, target) as GameObject;
-				
-				}
-
+				BulletScript.Create(true, 2, transform);				
 				this.power -= 5;
 			}
 		}
 
 		if (Input.GetKey(KeyCode.C)) {
 			if(this.power > 1){
-				GameObject player = Instantiate(Resources.Load("Bullet", typeof(GameObject)), transform.position, transform.rotation) as GameObject;
+				BulletScript.Create(true, 1, transform);
 				this.power -= 1;
 			}
 		}
@@ -91,5 +84,13 @@ public class PlayerScript : MonoBehaviour {
 			Destroy(gameObject);
 		}
 	}
+
+	void OnCollisionEnter(Collision collision) {
+        //if(collision.gameObject.tag == "Predator" || collision.gameObject.tag == "Goal") {
+        if(collision.gameObject.tag == "Enemy"){
+            collision.gameObject.SendMessage("applyDamage", 1000);
+            this.applyDamage(100);
+        }
+    }
 
 }

@@ -47,15 +47,13 @@ public class Enemy : MonoBehaviour {
 		int segment = (int)this.getRelativeTime() % this.waypoints.Count;
 		float u = (this.getRelativeTime() % 1);
 
-		Vector3 point = new Vector3();
-		
+		Vector3 point = new Vector3();	
 		Vector3 point0 = waypoints[(segment - 1) > 0 ? segment : waypoints.Count - 1];
 		Vector3 point1 = waypoints[segment];
 		Vector3 point2 = waypoints[(segment + 1) % waypoints.Count];
 		Vector3 point3 = waypoints[(segment + 2) % waypoints.Count];
 		
 		float tension = .5F;
-
 		point = (point1 +
 				(-1 * tension * point0 + tension * point2) * u +
 				(tension * 2 * point0 + (tension - 3) * point1 + (3 - (2 * tension)) * point2 - tension * point3) * (float)Math.Pow(u, 2) +
@@ -67,24 +65,15 @@ public class Enemy : MonoBehaviour {
 	public void applyDamage(float damage) {
 		health -= damage;
 		if(!this.dying && health <= 0) {
-			Destroy(collider);
-			StartCoroutine(this.die());
+			this.die();
 		}
 	}
 
-	IEnumerator die() {
-		int maxI = 10;
-		for(int i = maxI; i > 0; i--) {
-			transform.localScale += (Vector3.one * .2F);
-
-			float redPart = (float)Math.Round((double)(maxI - i) / maxI, 1);
-			this.renderer.material.color = new Color(redPart, 0, 0, .75F);
-			
-			if(i == 1) {
-				Destroy(this.gameObject);
-			}
-
-			yield return new WaitForEndOfFrame();
+	public void die() {
+		Destroy(collider);
+		Destroy(renderer);
+		for(int i = 0; i < UnityEngine.Random.Range(4, 15); i++) {
+			ExplosionScript.Create(gameObject);
 		}
 	}
 }

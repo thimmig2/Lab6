@@ -4,8 +4,7 @@ using System.Collections;
 public class LevelGenerator : MonoBehaviour {
 
 	private EnemyGenerator enemyGenerator;
-
-	public PlayerScript player;
+	private PlayerScript player;
 
 	// Use this for initialization
 	void Start () {
