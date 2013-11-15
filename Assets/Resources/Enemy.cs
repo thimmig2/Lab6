@@ -40,7 +40,7 @@ public class Enemy : MonoBehaviour {
 	}
 
 	private float getRelativeTime() {
-		return Time.fixedTime - this.createdAt;
+		return (Time.fixedTime - this.createdAt) / 2;
 	}
 
 	public void travelPath() {
@@ -80,8 +80,7 @@ public class Enemy : MonoBehaviour {
 
 	public void dropPowerup() {
 		if(UnityEngine.Random.value <= dropProbability) {
-			GameObject powerup = Instantiate(Resources.Load("Powerup", typeof(GameObject)), transform.position, transform.rotation) as GameObject;
-			powerup.renderer.material.color = Color.blue;
+			PowerupScript.Create(transform);
 		}
 	}
 }

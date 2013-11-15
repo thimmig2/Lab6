@@ -9,6 +9,7 @@ public class Enemy2Script : Enemy {
 		this.speed = 15;
 		this.regen = 1;
 		this.dropProbability = .1F;
+		transform.rotation = Quaternion.Euler(90, 180, 0);
 	}
 	
 }
