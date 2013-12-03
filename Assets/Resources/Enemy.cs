@@ -37,6 +37,8 @@ public class Enemy : MonoBehaviour {
 		if(waypoints.Count > 0) {
 			this.travelPath();
 		}
+
+		shootAtPlayer();
 	}
 
 	private float getRelativeTime() {
@@ -62,6 +64,10 @@ public class Enemy : MonoBehaviour {
 		transform.localPosition = point;
 	}
 
+	public virtual void shootAtPlayer() {
+		// will be overriden in child classes if they can shoot
+	}
+
 	public void applyDamage(float damage) {
 		health -= damage;
 		if(!this.dying && health <= 0) {
@@ -70,6 +76,7 @@ public class Enemy : MonoBehaviour {
 	}
 
 	public void die() {
+		LevelGenerator.enemiesKilled++;
 		this.dropPowerup();
 		Destroy(collider);
 		Destroy(renderer);

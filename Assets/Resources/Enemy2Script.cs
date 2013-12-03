@@ -11,5 +11,11 @@ public class Enemy2Script : Enemy {
 		this.dropProbability = .1F;
 		transform.rotation = Quaternion.Euler(90, 180, 0);
 	}
+
+	public override void shootAtPlayer() {
+		if(Random.Range(0, 1) < .2) {
+			BulletScript.Create(false, 4, transform);
+		}
+	}
 	
 }

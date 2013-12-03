@@ -33,11 +33,27 @@ public class EnemyGenerator : MonoBehaviour {
 		StartCoroutine(spawnEnemiesMethod(difficultySeed));
 	}
 
+	// difficulty seed between 1-5
 	IEnumerator spawnEnemiesMethod(int difficultySeed) {
-		for(int count = 0; count < 20; count++) {
+		int count = Random.Range(10, 10 + difficultySeed * 5);
+		int enemyType = 0 + (difficultySeed % 2);
+		List<Vector3> path;
+		switch(Random.Range(1, 3)) {
+			case 1:
+				path = path1();
+				break;
+			case 2:
+				path = path2();
+				break;
+			default:
+				path = path3();
+				break;
+		}
+
+		for(count; count > 0; count--) {
 			//yield return new WaitForSeconds (1);
-			enemies.Add(Enemy.Create(enemyPrefabs[0], transform, path2()));	
-			enemies.Add(Enemy.Create(enemyPrefabs[1], transform, path3()));		
+			enemies.Add(Enemy.Create(enemyPrefabs[enemyType], transform, path));	
+			
 			for(int i = 0; i < 40; i++) {
 				yield return new WaitForFixedUpdate();
 			}	
@@ -46,7 +62,7 @@ public class EnemyGenerator : MonoBehaviour {
 
 	public void clearEnemies() {
 		foreach(GameObject enemy in enemies) {
-			Destroy(enemy);
+			enemy.SendMessage("die");
 		}
 	}
 

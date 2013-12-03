@@ -11,4 +11,10 @@ public class Enemy1Script : Enemy {
 		this.dropProbability = .1F;
 	}
 
+	public override void shootAtPlayer() {
+		if(Random.Range(0, 1) < .1) {
+			BulletScript.Create(false, 3, transform);
+		}
+	}
+
 }

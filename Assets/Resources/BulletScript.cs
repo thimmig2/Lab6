@@ -25,6 +25,27 @@ public class BulletScript : MonoBehaviour {
 				bulletScript.speed = 15;
 				bulletScript.friendly = friendly;
 			}
+		} else if(bulletType == 3) {
+			// find the player and orient the bullet to it
+			GameObject player = GameObject.Find("Player");
+			var angle = Vector3.Angle(player.transform, parent.forward);
+			Quaternion rotation = transform.rotation = Quaternion.AngleAxis(30, Vector3.up);
+			
+			GameObject bullet = Instantiate(bulletPrefab, parent.position, rotation) as GameObject;
+			BulletScript bulletScript = bullet.GetComponent<BulletScript>();
+			bulletScript.damage = 5;
+			bulletScript.speed = 10;
+			bulletScript.friendly = friendly;
+
+		} else if(bulletType == 4) {
+			for(float angle = 135F; angle <= 225; angle += 15) {
+				Quaternion target = Quaternion.Euler(0, angle, 0);
+				GameObject bullet = Instantiate(bulletPrefab, parent.position, target) as GameObject;
+				BulletScript bulletScript = bullet.GetComponent<BulletScript>();
+				bulletScript.damage = 10;
+				bulletScript.speed = 15;
+				bulletScript.friendly = friendly;
+			}
 		}
 	}
 
@@ -43,9 +64,14 @@ public class BulletScript : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision) {
-        if(collision.gameObject.tag != "Player" && collision.gameObject.tag != "Bullet"){
-            collision.gameObject.SendMessage("applyDamage", this.damage);
-            Destroy(gameObject);
-        }
+        if(collision.gameObject.tag == "Bullet") {
+			Destroy(collision.gameObject);
+        } else if(collision.gameObject.tag == "Player" && this.friendly == false) {
+			collision.gameObject.SendMessage("applyDamage", this.damage);
+		} else if(collision.gameObject.tag == "Enemy" && this.friendly == true) {
+			collision.gameObject.SendMessage("applyDamage", this.damage);     	
+		}	
+
+        Destroy(gameObject);
     }
 }

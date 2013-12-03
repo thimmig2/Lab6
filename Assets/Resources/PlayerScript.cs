@@ -5,18 +5,23 @@ public class PlayerScript : MonoBehaviour {
 
 	private static float defaultHealth = 100;
 	private static float defaultShield = 10;
-	private static float defaultSpeed = 10;
 	private static float defaultPower = 10;
 	private static float defaultRegen = 5F;
 
 	private float health = defaultHealth;
 	private float shield = defaultShield;
-	private float speed = defaultSpeed;
 	private float power = 0;
 	private float maxPower = defaultPower;
 	private float regen = defaultRegen;
 
 	private Vector4 boundaries;
+
+	private static float maxAccel = 2;
+	private static float maxVeloc = 10;
+
+	private Vector3 veloc = Vector3.zero;
+
+	private bool usedBomb = false;
 
 	public static PlayerScript Create(Vector4 boundaries, Transform parent){
 		GameObject player = Instantiate(Resources.Load("Player", typeof(GameObject))) as GameObject;
@@ -41,22 +46,27 @@ public class PlayerScript : MonoBehaviour {
 	public void controls() {
 		 
 		if (Input.GetKey(KeyCode.LeftArrow) && transform.localPosition.x > boundaries.x) {
-			transform.position += Vector3.left * speed * Time.deltaTime;
-		} 
-
-		if (Input.GetKey(KeyCode.UpArrow) && transform.localPosition.z < boundaries.y) {
-			transform.position += Vector3.forward * speed * Time.deltaTime;
+			veloc.x -= maxAccel * Time.deltaTime;
+			veloc.x = Mathf.Max(maxVeloc, veloc.x);
+		} else if (Input.GetKey(KeyCode.RightArrow) && transform.localPosition.x < boundaries.z) {
+			veloc.x += maxAccel * Time.deltaTime;
+			veloc.x = Mathf.Min(maxVeloc, veloc.x);
+		} else {
+			veloc.x *= .95;
 		}
 
-		if (Input.GetKey(KeyCode.RightArrow) && transform.localPosition.x < boundaries.z) {
-			transform.position += Vector3.right * speed * Time.deltaTime;
-		} 
+		if (Input.GetKey(KeyCode.UpArrow) && transform.localPosition.z < boundaries.y) {
+			veloc.z += maxAccel * Time.deltaTime;
+			veloc.z = Mathf.Min(maxVeloc, veloc.z);
+		} else if (Input.GetKey(KeyCode.DownArrow) && transform.localPosition.z > boundaries.w) {
+			veloc.z -= maxAccel * Time.deltaTime;
+			veloc.z = Mathf.Max(maxVeloc, veloc.z);
+		} else {
+			veloc.x *= .95;
+		}
 
-		if (Input.GetKey(KeyCode.DownArrow) && transform.localPosition.z > boundaries.w) {
-			transform.position += Vector3.back * speed * Time.deltaTime;
-		} 
-
-		if (Input.GetKey(KeyCode.Z)) {
+		if (Input.GetKey(KeyCode.Z) && usedBomb == false) {
+			usedBomb = true;
 			foreach(GameObject enemy in GameObject.FindGameObjectsWithTag("Enemy")) {
 				enemy.SendMessage("die");
 			}
@@ -76,10 +86,16 @@ public class PlayerScript : MonoBehaviour {
 			}
 		}
 
+		updatePosition();
+	}
+
+	public void updatePosition() {
+		transform.position += veloc * Time.deltaTime;
 	}
 
 	public void applyDamage(float damage) {
 		health -= damage;
+		Debug.Log("You've been hit, current health :" + health);
 		if(health <= 0) {
 			Destroy(gameObject);
 		}
@@ -90,7 +106,6 @@ public class PlayerScript : MonoBehaviour {
 	}
 
 	void OnCollisionEnter(Collision collision) {
-        //if(collision.gameObject.tag == "Predator" || collision.gameObject.tag == "Goal") {
         if(collision.gameObject.tag == "Enemy"){
             collision.gameObject.SendMessage("applyDamage", 1000);
             this.applyDamage(100);
